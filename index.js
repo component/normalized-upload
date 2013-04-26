@@ -16,19 +16,53 @@ module.exports = normalize;
 function normalize(e, fn) {
   e.items = [];
 
+  var files = e.dataTransfer && e.dataTransfer.files;
+
   var items = e.clipboardData
     ? e.clipboardData.items
     : e.dataTransfer.items;
 
-  if (!items) return fn(e);
-  normalizeItems(e, items, function(){ fn(e) });
+  items = items || [];
+  files = files || [];
+
+  normalizeItems(e, items, function(){
+    normalizeFiles(e, files, function(){
+      fn(e)
+    });
+  });
+}
+
+/**
+ * Process `files`.
+ *
+ * Some browsers (chrome) populate both .items and .files
+ * with the same things, so we need to check that the `File`
+ * is not already present.
+ *
+ * @param {Event} e
+ * @param {FileList} files
+ * @param {Function} fn
+ * @api private
+ */
+
+function normalizeFiles(e, files, fn) {
+  var pending = files.length;
+
+  if (!pending) return fn();
+
+  for (var i = 0; i < files.length; i++) {
+    if (~e.items.indexOf(files[i])) continue;
+    e.items.push(files[i]);
+  }
+
+  fn();
 }
 
 /**
  * Process `items`.
  *
  * @param {Event} e
- * @param {Array} items
+ * @param {ItemList} items
  * @param {Function} fn
  * @return {Type}
  * @api private
@@ -36,6 +70,8 @@ function normalize(e, fn) {
 
 function normalizeItems(e, items, fn){
   var pending = items.length;
+
+  if (!pending) return fn();
 
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
