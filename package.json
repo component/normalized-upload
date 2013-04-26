@@ -1,0 +1,16 @@
+{
+  "name": "normalized-upload",
+  "repo": "component/normalized-upload",
+  "description": "Normalized DataTransfer items for less pain",
+  "version": "0.0.1",
+  "keywords": ["upload", "utility"],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "component": {
+    "scripts": {
+      "normalized-upload/index.js": "index.js"
+    }
+  }
+}
