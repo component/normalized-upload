@@ -1,15 +1,26 @@
 
 # normalized-upload
 
-  Normalized DataTrasfer items for less pain
+  Normalized DataTransfer items for less pain.
 
 ## Installation
 
     $ component install component/normalized-upload
 
-## API
+## Example
 
-   
+```js
+var normalize = require('normalized-upload');
+
+document.onpaste = function(e){
+  console.log(e);
+  normalize(e, function(){
+    e.items.forEach(function(item){
+      console.log(item);
+    });
+  });
+};
+```
 
 ## License
 

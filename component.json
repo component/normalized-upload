@@ -1,9 +1,9 @@
 {
   "name": "normalized-upload",
   "repo": "component/normalized-upload",
-  "description": "Normalized DataTrasfer items for less pain",
+  "description": "Normalized DataTransfer items for less pain",
   "version": "0.0.1",
-  "keywords": [],
+  "keywords": ["upload", "utility"],
   "dependencies": {},
   "development": {},
   "license": "MIT",
