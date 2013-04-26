@@ -16,6 +16,8 @@ module.exports = normalize;
 function normalize(e, fn) {
   e.items = [];
 
+  var ignore = [];
+
   var files = e.dataTransfer && e.dataTransfer.files;
 
   var items = e.clipboardData
@@ -25,8 +27,8 @@ function normalize(e, fn) {
   items = items || [];
   files = files || [];
 
-  normalizeItems(e, items, function(){
-    normalizeFiles(e, files, function(){
+  normalizeItems(e, items, ignore, function(){
+    normalizeFiles(e, files, ignore, function(){
       fn(e)
     });
   });
@@ -45,14 +47,16 @@ function normalize(e, fn) {
  * @api private
  */
 
-function normalizeFiles(e, files, fn) {
+function normalizeFiles(e, files, ignore, fn) {
   var pending = files.length;
 
   if (!pending) return fn();
 
   for (var i = 0; i < files.length; i++) {
-    if (~e.items.indexOf(files[i])) continue;
-    e.items.push(files[i]);
+    var file = files[i];
+    if (~ignore.indexOf(file)) continue;
+    if (~e.items.indexOf(file)) continue;
+    e.items.push(file);
   }
 
   fn();
@@ -68,7 +72,7 @@ function normalizeFiles(e, files, fn) {
  * @api private
  */
 
-function normalizeItems(e, items, fn){
+function normalizeItems(e, items, ignore, fn){
   var pending = items.length;
 
   if (!pending) return fn();
@@ -80,6 +84,7 @@ function normalizeItems(e, items, fn){
     if ('file' == item.kind && item.webkitGetAsEntry) {
       var entry = item.webkitGetAsEntry();
       if (entry && entry.isDirectory) {
+        ignore.push(item.getAsFile());
         walk(e, entry, function(){
           --pending || fn(e);
         });
