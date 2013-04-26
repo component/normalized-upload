@@ -26,8 +26,6 @@ function normalize(e, fn) {
     ? e.clipboardData.items
     : e.dataTransfer.items;
 
-  console.log(e.clipboardData.files.length);
-
   items = items || [];
   files = files || [];
 
