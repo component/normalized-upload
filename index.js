@@ -43,7 +43,7 @@ function normalizeItems(e, items, fn){
     // directories
     if ('file' == item.kind && item.webkitGetAsEntry) {
       var entry = item.webkitGetAsEntry();
-      if (entry.isDirectory) {
+      if (entry && entry.isDirectory) {
         walk(e, entry, function(){
           --pending || fn(e);
         });
