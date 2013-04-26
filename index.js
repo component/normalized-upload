@@ -18,11 +18,15 @@ function normalize(e, fn) {
 
   var ignore = [];
 
-  var files = e.dataTransfer && e.dataTransfer.files;
+  var files = e.clipboardData
+    ? e.clipboardData.files
+    : e.dataTransfer.files;
 
   var items = e.clipboardData
     ? e.clipboardData.items
     : e.dataTransfer.items;
+
+  console.log(e.clipboardData.files.length);
 
   items = items || [];
   files = files || [];
