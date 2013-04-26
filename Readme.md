@@ -1,7 +1,7 @@
 
 # normalized-upload
 
-  Normalized DataTransfer items for less pain.
+  Normalized DataTransfer items for less upload item handling pain.
 
 ## Installation
 
