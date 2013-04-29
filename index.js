@@ -58,6 +58,7 @@ function normalizeFiles(e, files, ignore, fn) {
     var file = files[i];
     if (~ignore.indexOf(file)) continue;
     if (~e.items.indexOf(file)) continue;
+    file.kind = 'file';
     e.items.push(file);
   }
 
