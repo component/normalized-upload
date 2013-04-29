@@ -6,6 +6,21 @@
 module.exports = normalize;
 
 /**
+ * Get `type` from `e` on .clipboardData or .dataTransfer.
+ *
+ * @param {Event} e
+ * @param {String} type
+ * @return {Array}
+ * @api private
+ */
+
+function get(e, type) {
+  if (e.clipboardData) return e.clipboardData[type] || [];
+  if (e.dataTransfer) return e.dataTransfer[type] || [];
+  return [];
+}
+
+/**
  * Normalize `e` adding the `e.items` array and invoke `fn()`.
  *
  * @param {Event} e
@@ -17,17 +32,8 @@ function normalize(e, fn) {
   e.items = [];
 
   var ignore = [];
-
-  var files = e.clipboardData
-    ? e.clipboardData.files
-    : e.dataTransfer.files;
-
-  var items = e.clipboardData
-    ? e.clipboardData.items
-    : e.dataTransfer.items;
-
-  items = items || [];
-  files = files || [];
+  var files = get(e, 'files');
+  var items = get(e, 'items');
 
   normalizeItems(e, items, ignore, function(){
     normalizeFiles(e, files, ignore, function(){
